@@ -88,6 +88,7 @@ export async function disconnect(): Promise< void > {
 				return;
 			}
 			isConnected = false;
+			pm2Bus = null;
 			resolve();
 		} );
 	} );
