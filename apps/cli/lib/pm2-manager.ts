@@ -37,6 +37,16 @@ export interface ProcessEventData {
 const pm2 = new PM2( { pm2_home: STUDIO_PM2_HOME } );
 
 let isConnected = false;
+let keepAlive = false;
+
+/**
+ * When enabled, `disconnect()` becomes a no-op so the PM2 connection stays open
+ * for the lifetime of the process. Used by the AI agent to avoid reconnection
+ * issues when multiple tools call connect/disconnect in sequence.
+ */
+export function setKeepAlive( value: boolean ): void {
+	keepAlive = value;
+}
 
 export async function connect(): Promise< void > {
 	if ( isConnected ) {
@@ -72,7 +82,7 @@ export async function connect(): Promise< void > {
 }
 
 export async function disconnect(): Promise< void > {
-	if ( ! isConnected ) {
+	if ( ! isConnected || keepAlive ) {
 		return;
 	}
 
