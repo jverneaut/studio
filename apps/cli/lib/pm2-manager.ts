@@ -237,10 +237,13 @@ export async function startProcess(
 	args: string[] = []
 ): Promise< ProcessDescription > {
 	return new Promise( ( resolve, reject ) => {
+		// --experimental-wasm-jspi is only available in Node 22+.
+		// Older versions (e.g., Node 20) use asyncify and don't support this flag.
+		const nodeMajor = parseInt( process.versions.node.split( '.' )[ 0 ], 10 );
 		const processConfig: StartOptions = {
 			name: processName,
 			interpreter: process.execPath,
-			node_args: '--experimental-wasm-jspi',
+			node_args: nodeMajor >= 22 ? '--experimental-wasm-jspi' : undefined,
 			script: scriptPath,
 			exec_mode: 'fork',
 			autorestart: false,
