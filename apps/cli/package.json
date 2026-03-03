@@ -5,12 +5,12 @@
 	"productName": "Studio CLI",
 	"description": "WordPress Studio CLI",
 	"license": "GPL-2.0-or-later",
-	"main": "index.js",
 	"bin": {
 		"studio": "./dist/cli/main.js"
 	},
 	"files": [
 		"dist/cli/*.js",
+		"dist/cli/*.map",
 		"dist/locales/",
 		"patches/",
 		"scripts/"
