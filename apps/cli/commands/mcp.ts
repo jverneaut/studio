@@ -30,9 +30,6 @@ function printInstallationInstructions(): void {
 		'    macOS  ~/Library/Application\\ Support/Claude/claude_desktop_config.json',
 		'    Win    %APPDATA%\\Claude\\claude_desktop_config.json',
 		'',
-		'  Cursor',
-		'    ~/.cursor/mcp.json',
-		'',
 	];
 
 	for ( const line of lines ) {
