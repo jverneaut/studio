@@ -10,6 +10,7 @@ import { __ } from '@wordpress/i18n';
 import yargs from 'yargs';
 import { commandHandler as eventsCommandHandler } from 'cli/commands/_events';
 import { registerCommand as registerAiCommand } from 'cli/commands/ai';
+import { registerCommand as registerAiSessionsCommand } from 'cli/commands/ai/sessions';
 import { registerCommand as registerAuthLoginCommand } from 'cli/commands/auth/login';
 import { registerCommand as registerAuthLogoutCommand } from 'cli/commands/auth/logout';
 import { registerCommand as registerAuthStatusCommand } from 'cli/commands/auth/status';
@@ -130,7 +131,25 @@ async function main() {
 		.strict();
 
 	if ( process.env.ENABLE_STUDIO_AI === 'true' ) {
-		registerAiCommand( studioArgv );
+		studioArgv.command( 'ai', __( 'AI-powered WordPress assistant' ), ( aiYargs ) => {
+			registerAiCommand( aiYargs as StudioArgv );
+			aiYargs.command( 'sessions', __( 'Manage AI sessions' ), ( sessionsYargs ) => {
+				sessionsYargs
+					.option( 'path', {
+						hidden: true,
+					} )
+					.option( 'session-persistence', {
+						type: 'boolean',
+						default: true,
+						description: __( 'Record this AI chat session to disk' ),
+					} );
+				registerAiSessionsCommand( sessionsYargs as StudioArgv );
+				sessionsYargs
+					.version( false )
+					.demandCommand( 1, __( 'You must provide a valid ai sessions command' ) );
+			} );
+			aiYargs.version( false );
+		} );
 	}
 
 	await studioArgv.argv;
