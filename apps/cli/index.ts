@@ -10,7 +10,9 @@ import { __ } from '@wordpress/i18n';
 import yargs from 'yargs';
 import { commandHandler as eventsCommandHandler } from 'cli/commands/_events';
 import { registerCommand as registerAiCommand } from 'cli/commands/ai';
-import { registerCommand as registerAiSessionsCommand } from 'cli/commands/ai/sessions';
+import { registerCommand as registerAiSessionsDeleteCommand } from 'cli/commands/ai/sessions/delete';
+import { registerCommand as registerAiSessionsListCommand } from 'cli/commands/ai/sessions/list';
+import { registerCommand as registerAiSessionsResumeCommand } from 'cli/commands/ai/sessions/resume';
 import { registerCommand as registerAuthLoginCommand } from 'cli/commands/auth/login';
 import { registerCommand as registerAuthLogoutCommand } from 'cli/commands/auth/logout';
 import { registerCommand as registerAuthStatusCommand } from 'cli/commands/auth/status';
@@ -143,7 +145,9 @@ async function main() {
 						default: true,
 						description: __( 'Record this AI chat session to disk' ),
 					} );
-				registerAiSessionsCommand( sessionsYargs as StudioArgv );
+				registerAiSessionsListCommand( sessionsYargs as StudioArgv );
+				registerAiSessionsResumeCommand( sessionsYargs as StudioArgv );
+				registerAiSessionsDeleteCommand( sessionsYargs as StudioArgv );
 				sessionsYargs
 					.version( false )
 					.demandCommand( 1, __( 'You must provide a valid ai sessions command' ) );
